@@ -66,26 +66,27 @@ class AlanaController {
       console.log('INFO: DM message received');
       message.reply("There's no DM functionality");
     } else if (message.channel.type === 'text') {
-      this.handleMessageCommand(this.commands, message, message.content);
+			this.handleMessageCommand(this.commands, message, message.content);
     }
   }
 
   async handleMessageCommand(command, message, text) {
-		console.log(command);
-		if (Object.keys(command).length === 0 && command.constructor === Object) { return false; }
+		console.log('INFO: commands', command);
+		console.log('TEXT', text);
     const permissionLevel = this.getPermission(message.author.id, message.member.roles.cache, message.channel.id);
     console.log('INFO: permission', permissionLevel, 'command permission', command.permission);
     if (permissionLevel < command.permission) {
       this.sendError(message.channel, 'Insufficient permission');
     } else {
-      let parsed = command.parser(text, this.config.prefix);
+			if (text === this.config.help){
+				message.channel.send(command.help.call(command));
+				return true;
+			}
+      let parsed = command.parser(text, command.subCommand.keys());
+			console.log('PARSED', parsed);
       if (parsed !== -1){
-				if (parsed.first === this.config.help){
-					message.channel.send(command.help.call(command));
-					return true;
-				}
-				if (parsed.first in command.subCommand){
-					const stopHere = await this.handleMessageCommand(command.subCommand[parsed.first], message, parsed.rest);
+				if (command.subCommand.has(parsed.first)){
+					const stopHere = await this.handleMessageCommand(command.subCommand.get(parsed.first), message, parsed.rest);
 					if (stopHere) { return stopHere; }
 				}
       }
