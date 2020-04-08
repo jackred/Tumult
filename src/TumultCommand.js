@@ -10,9 +10,17 @@ const TumultParser = require('./TumultParser');
 const TumultDiscordUtility = require('./TumultDiscordUtility');
 
 class AlanaCommand {
-  constructor(name, action, permission=0, subCommand=[],
-							generalHelp='', help='',
-							parser=TumultParser.defaultParser) {
+  constructor(name, action,
+							{
+								permission = 0,
+								subCommand = [],
+								generalHelp = '',
+								help = '',
+								parser = TumultParser.defaultParser
+							} = {}) {
+		//permission=0, subCommand=[],
+		//				generalHelp='', help='',
+		//			parser=TumultParser.defaultParser) {
 		this.name = name; // string
     this.action = action; // function
     this.subCommand = TumultDiscordUtility.arrayToCollectionCommand(subCommand); // array of Command
