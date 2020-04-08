@@ -24,8 +24,8 @@ class AlanaCommand {
 		this.name = name; // string
     this.action = action; // function
     this.subCommand = TumultDiscordUtility.arrayToCollectionCommand(subCommand); // array of Command
-    this.generalHelp = (generalHelp === '') ? this.defaultGeneralHelp : generalHelp; // function > string
-    this.help = (help === '') ? this.defaultHelp : help; // function > string
+    this.generalHelp = this.createHelp(generalHelp, this.defaultGeneralHelp);
+    this.help = this.createHelp(help, this.defaultHelp); // function > string
     this.permission = permission; // int
     this.parser = parser; // fuction -> [string]
   }
@@ -33,19 +33,36 @@ class AlanaCommand {
   // that return `generalHelp` + `help`
   defaultHelp() {
     let msg = this.generalHelp();
-    for (let command in this.subCommand) {
-      msg +='  ' + this.subCommand[command].generalHelp();
-    }
+    msg += this.subCommand.reduce((acc, val) => acc + '\n' + val.generalHelp(), '');
     return msg;
   }
 
   defaultGeneralHelp() {
-    return '';
-  }
+		return '';
+	}
 
-  listSubCommand(){
-    return Object.keys(this.subCommand);
-  }
-}
+	createHelp(toSet, defaultFn) {
+		let result;
+		switch (typeof toSet) {
+		case 'string':
+			if (toSet === '') {
+				result = defaultFn;
+			} else {
+				result = () => toSet;
+			}
+			break;
+		case 'function':
+			result = toSet;
+			break;
+		default:
+			throw 'Wrong parameters given as command constructor. Help parameter should be either string or function';
+		}
+		return result;
+	}
 
-module.exports = AlanaCommand;
+		listSubCommand(){
+			return Object.keys(this.subCommand);
+		}
+	}
+
+	module.exports = AlanaCommand;
