@@ -8,26 +8,22 @@
 
 const TumultUtility = require('./TumultUtility');
 
-function prefixParser(text, prefixs) {
-  let res = -1;
-  for (let prefix of prefixs) {
-		console.log('prefix', prefix);
-    if (text.startsWith(prefix)){
-		  let rest = text.replace(prefix, '');
-			console.log(rest);
-      res = {'first': prefix, 'rest': rest.trim()};
-    }
+
+function prefixParser(text, prefix) {
+  if ((text.startsWith(prefix)) && (text.substring(prefix) !== ' ')) {
+		let rest = text.replace(prefix, '');
+    return {'arg': rest.trim(), commandCalled: true};
   }
-	console.log('RES', res);
-  return res;
+  return {commandCalled: false};
 }
 
 
-function defaultParser(text, word=' ') {
-	console.log('WORD', word);
-  let res = TumultUtility.splitIn2(text, word);
-	console.log('RESD', res);
-  return {'first': res[0], 'rest': (res.length === 1) ? '' : res[1].trim() };
+function defaultParser(text, word, separatorWord=' ') {
+  if ((text === word) || ((text.startsWith(word)) && (text.substring(word.length)[0] === separatorWord))) {
+		let rest = text.replace(word, '');
+    return {'arg': rest.trim(), commandCalled: true};
+  }
+  return {commandCalled: false};
 }
 
 

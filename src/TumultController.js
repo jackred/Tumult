@@ -7,11 +7,12 @@
 'use strict';
 
 const { TextChannel } = require('discord.js');
+const TumultDiscordUtility = require('./TumultDiscordUtility');
 
 class AlanaController {
-  constructor(client, command, config, permission,  options={}) {
+  constructor(client, commands, config, permission,  options={}) {
     this.client = client;
-    this.commands = command;
+    this.commands = TumultDiscordUtility.arrayToCollectionCommand(commands);
     // this.reactions = reaction;
     this.options = options;
     this.config = config;
@@ -66,44 +67,55 @@ class AlanaController {
       console.log('INFO: DM message received');
       message.reply("There's no DM functionality");
     } else if (message.channel.type === 'text') {
-			this.handleMessageCommand(this.commands, message, message.content);
+			this.handleCommands(this.commands, message, message.content);
     }
   }
 
-  async handleMessageCommand(command, message, text) {
-		console.log('INFO: commands', command);
-		console.log('TEXT', text);
-    const permissionLevel = this.getPermission(message.author.id, message.member.roles.cache, message.channel.id);
-    console.log('INFO: permission', permissionLevel, 'command permission', command.permission);
-    if (permissionLevel < command.permission) {
-      this.sendError(message.channel, 'Insufficient permission');
-    } else {
-			if (text === this.config.help){
+	async handleCommands(commands, message, argText) {
+		const keys = commands.keys();
+		let done = false;
+		let res = false;
+		while ((!done) && (!res)) {
+			const key = keys.next();
+			console.log('KEY', key);
+			done = key.done;
+			if (!done) {
+				res = await this.handleCommandMessage(commands.get(key.value), message, argText);
+				console.log("RES", res);
+			}
+		}
+		return res;
+	}
+	
+	async handleCommandMessage(command, message, text) {
+		const resParser = command.parser(text, command.name);
+		console.log('res', resParser);
+		if (resParser.commandCalled) {
+			console.log(`INFO: command ${command.name} has been call`);
+			const permissionLevel = this.getPermission(message.author.id, message.member.roles.cache, message.channel.id);
+			if (permissionLevel < command.permission) {
+				this.sendError(message.channel, 'Insufficient permission');
+				return false;
+			}
+			console.log('ARG', resParser.arg);
+			if (resParser.arg === this.config.help) {
 				message.channel.send(command.help.call(command));
 				return true;
 			}
-      let parsed = command.parser(text, command.subCommand.keys());
-			console.log('PARSED', parsed);
-      if (parsed !== -1){
-				if (command.subCommand.has(parsed.first)){
-					const stopHere = await this.handleMessageCommand(command.subCommand.get(parsed.first), message, parsed.rest);
-					if (stopHere) { return stopHere; }
-				}
-      }
-      const stopHere = await this.catchErrorCommand(async () => {
-				return await command.action.call(command, message, text, this.db, this.client, this.tts, this.stt);
-      },
-																										message.channel);// some action can trigger command AND args
-      return stopHere;
-    }
-    return false;
-  }
+			let stopHere = await this.handleCommands(command.subCommand, message, resParser.arg);
+			if (stopHere) { return true; }
+			stopHere = await command.action.call(command, message, resParser.arg, this.options);
+			return true;			
+		}
+		return false;
+	}
 
-  sendError(channel, error){
-    console.log('Error:', error);
-    channel.send('```A problem occured:\n' + error +'```');
-  }
-  
+	
+	sendError(channel, error){
+		console.log('Error:', error);
+		channel.send('```A problem occured:\n' + error +'```');
+	}
+	
 }
 
 module.exports = AlanaController;
