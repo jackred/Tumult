@@ -4,18 +4,18 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-'use strict';
+"use strict";
 
-const { Collection } = require('discord.js');
+const { Collection } = require("discord.js");
 
 function arrayToCollectionCommand(array) {
   const resCollection = new Collection();
-  for (let i of array) {
-    resCollection.set(i.name, i);
+  for (let command of array) {
+    resCollection.set(command.name, command);
   }
   return resCollection;
 }
 
-module.exports = { 
-  arrayToCollectionCommand
+module.exports = {
+  arrayToCollectionCommand,
 };

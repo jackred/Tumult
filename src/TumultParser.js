@@ -4,30 +4,28 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-'use strict';
-
-const TumultUtility = require('./TumultUtility');
-
+"use strict";
 
 function prefixParser(text, prefix) {
-  if ((text.startsWith(prefix)) && (text.substring(prefix) !== ' ')) {
-		let rest = text.replace(prefix, '');
-    return {'arg': rest.trim(), commandCalled: true};
+  if (text.startsWith(prefix) && text.substring(prefix) !== " ") {
+    let rest = text.replace(prefix, "");
+    return { arg: rest.trim(), commandCalled: true };
   }
-  return {commandCalled: false};
+  return { commandCalled: false };
 }
 
-
-function defaultParser(text, word, separatorWord=' ') {
-  if ((text === word) || ((text.startsWith(word)) && (text.substring(word.length)[0] === separatorWord))) {
-		let rest = text.replace(word, '');
-    return {'arg': rest.trim(), commandCalled: true};
+function defaultParser(text, word, separatorWord = " ") {
+  if (
+    text === word ||
+    (text.startsWith(word) && text.substring(word.length)[0] === separatorWord)
+  ) {
+    let rest = text.replace(word, "");
+    return { arg: rest.trim(), commandCalled: true };
   }
-  return {commandCalled: false};
+  return { commandCalled: false };
 }
 
-
-module.exports = { 
+module.exports = {
   defaultParser,
-  prefixParser
+  prefixParser,
 };

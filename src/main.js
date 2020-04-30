@@ -8,7 +8,7 @@
 
 
 module.exports = {
-  TumultController: require('./TumultController'),
-  TumultCommand: require('./TumultCommand'),
-  TumultParser: require('./TumultParser'),
+  Controller: require('./TumultController'),
+  Command: require('./TumultCommand'),
+  Parser: require('./TumultParser'),
 };
