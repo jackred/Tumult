@@ -1,9 +1,37 @@
-//-*- Mode: js2; js2-basic-offset: 2;  tab-width: 2; -*-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: TumultController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: TumultController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//-*- Mode: js2; js2-basic-offset: 2;  tab-width: 2; -*-
 //vim:set et sts=4 ts=4 tw=80:
 //This Source Code Form is subject to the terms of the MIT License.
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
-//author: JackRed <jackred@tuta.io>
+//author: JackRed &lt;jackred@tuta.io>
 "use strict";
 
 const { Client } = require("discord.js");
@@ -17,12 +45,12 @@ const TumultCommand = require("./TumultCommand.js");
 class TumultController {
   /**
    * @param {String} token Token of the account to log in with
-   * @param {Array.<TumultCommand>} commands The top level messages commands that will be matched againts every message. TODO -> make commands for message specific.
+   * @param {Array.&lt;TumultCommand>} commands The top level messages commands that will be matched againts every message. TODO -> make commands for message specific.
    * @param {Object} config Object containing configuration information. TODO -> change (contain only help)
    * @param {Object} permission Object containing permission information. TODO -> change to a class / structure specific as it has a special format
    * @param {Object} [options] Options for client or commands
    * @param {Object} [option.option={}] Options gave by the user, forwarded to every command.
-   * @param {Array<PartialType>} [options.partials=[]] Options for the client to catch partial. Event will still be emitted when there's no data for a the structure. See the "Partials" on discord.js.org. TODO -> give all option to client
+   * @param {Array&lt;PartialType>} [options.partials=[]] Options for the client to catch partial. Event will still be emitted when there's no data for a the structure. See the "Partials" on discord.js.org. TODO -> give all option to client
    * @param {string|ActivityOptions} [options.activity] Activity being played, or options for setting the activity
    */
   constructor(
@@ -36,7 +64,7 @@ class TumultController {
     this.createHandler();
     /**
      * Collection of the message commands
-     * @type {Collection<String, tumultCommand>}
+     * @type {Collection&lt;String, tumultCommand>}
      */
     this.commands = TumultDiscordUtility.arrayToCollectionCommand(commands);
     // this.reactions = reaction;
@@ -75,8 +103,8 @@ class TumultController {
 
   /**
    *
-   * @param {TumultCommand|Array.<TumultCommand>} commands The commands to add to the controller
-   * @param {Arrat<String>} [path=[]] The path where to add the command. Each element should be the name of a command, the first one being at the root.
+   * @param {TumultCommand|Array.&lt;TumultCommand>} commands The commands to add to the controller
+   * @param {Arrat&lt;String>} [path=[]] The path where to add the command. Each element should be the name of a command, the first one being at the root.
    */
   addCommands(commands, path = []) {
     if (!Array.isArray(commands)) {
@@ -92,7 +120,7 @@ class TumultController {
       throw "Path need to be an array";
     }
     let cmd = this.commands;
-    while (path.length > 0 && cmd.has(path[0])) {
+    while (path.length > 0 &amp;&amp; cmd.has(path[0])) {
       cmd = cmd.get(path.shift()).subCommand; // pop on first element
     }
     if (path.length !== 0) {
@@ -106,8 +134,8 @@ class TumultController {
 
   /**
    *
-   * @param {String|Array<String>} commandsName The names of the commands to remove from the controller
-   * @param {Arrat<String>} [path=[]] The path to the commands to be removed. Each element should be the name of a command, the first one being at the root.
+   * @param {String|Array&lt;String>} commandsName The names of the commands to remove from the controller
+   * @param {Arrat&lt;String>} [path=[]] The path to the commands to be removed. Each element should be the name of a command, the first one being at the root.
    */
   removeCommands(commandsName, path = []) {
     if (!Array.isArray(commandsName)) {
@@ -120,7 +148,7 @@ class TumultController {
       path = [path];
     }
     let cmd = this.commands;
-    while (path.length > 0 && cmd.has(path[0])) {
+    while (path.length > 0 &amp;&amp; cmd.has(path[0])) {
       cmd = cmd.get(path.shift()).subCommand; // pop on first element
     }
     if (path.length !== 0) {
@@ -203,7 +231,7 @@ class TumultController {
     const keys = commands.keys();
     let done = false;
     let res = false;
-    while (!done && !res) {
+    while (!done &amp;&amp; !res) {
       const key = keys.next();
       console.log("KEY", key);
       done = key.done;
@@ -229,7 +257,7 @@ class TumultController {
         message.member.roles.cache,
         message.channel.id
       );
-      if (permissionLevel < command.permission) {
+      if (permissionLevel &lt; command.permission) {
         this.sendError(message.channel, "Insufficient permission");
         return false;
       }
@@ -268,3 +296,26 @@ class TumultController {
 }
 
 module.exports = TumultController;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-ActivityOptions.html">ActivityOptions</a></li><li><a href="external-Collection.html">Collection</a></li><li><a href="external-MessageEmbed.html">MessageEmbed</a></li><li><a href="external-PartialType.html">PartialType</a></li></ul><h3>Classes</h3><ul><li><a href="TumultCommand.html">TumultCommand</a></li><li><a href="TumultController.html">TumultController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#defaultParser">defaultParser</a></li><li><a href="global.html#prefixParser">prefixParser</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun May 10 2020 21:28:02 GMT+0100 (British Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

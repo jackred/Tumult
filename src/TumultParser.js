@@ -6,6 +6,12 @@
 //author: JackRed <jackred@tuta.io>
 "use strict";
 
+/**
+ * Parse for prefix in a message. It check that the message start with the prefix and return the argument and a boolean. TODO -> make return type a structure. TODO -> make the prefix integrated in the type of command
+ * @param {String} text The text to parse
+ * @param {String} prefix The prefix to check against the text
+ * @returns {Object}
+ */
 function prefixParser(text, prefix) {
   if (text.startsWith(prefix) && text.substring(prefix) !== " ") {
     let rest = text.replace(prefix, "");
@@ -14,6 +20,13 @@ function prefixParser(text, prefix) {
   return { commandCalled: false };
 }
 
+/**
+ * Parse for command in a message. It check that the first word separated by a given separator is the given word.
+ * @param {String} text The text to parse
+ * @param {String} word The word to check against the text
+ * @param {String} separatorword The separator used to separe world
+ * @returns {Object}
+ */
 function defaultParser(text, word, separatorWord = " ") {
   if (
     text === word ||
