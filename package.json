@@ -25,6 +25,8 @@
     "discord.js": "^12.0.2"
   },
   "devDependencies": {
-    "jsdoc": "^3.6.4"
+    "eslint": "^7.0.0",
+    "jsdoc": "^3.6.4",
+    "prettier": "^2.0.5"
   }
 }
