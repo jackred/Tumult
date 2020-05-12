@@ -17,20 +17,24 @@ const TumultCommand = require("./TumultCommand.js");
 class TumultController {
   /**
    * @param {String} token Token of the account to log in with
-   * @param {Array.<TumultCommand>} commands The top level messages commands that will be matched againts every message. TODO -> make commands for message specific.
-   * @param {Object} config Object containing configuration information. TODO -> change (contain only help)
    * @param {Object} permission Object containing permission information. TODO -> change to a class / structure specific as it has a special format
    * @param {Object} [options] Options for client or commands
-   * @param {Object} [option.option={}] Options gave by the user, forwarded to every command.
+   * @param {Object} [options.options={}] Options gave by the user, forwarded to every command.
    * @param {Array<PartialType>} [options.partials=[]] Options for the client to catch partial. Event will still be emitted when there's no data for a the structure. See the "Partials" on discord.js.org. TODO -> give all option to client
-   * @param {string|ActivityOptions} [options.activity] Activity being played, or options for setting the activity
+   * @param {string|ActivityOptions} [options.activity="mention me + help"] Activity being played, or options for setting the activity
+   * @param {Array.<TumultCommand>} [options.messageCommands=[]] The top level messages commands that will be matched againts every message.
+   * @param {String} [options.helpKey="help"] The key used to call the help message on any command
    */
   constructor(
     token,
-    commands,
-    config,
     permission,
-    { options = {}, partials = [], activity } = {}
+    {
+      options = {},
+      partials = [],
+      activity = "mention me + help",
+      messageCommands = [],
+      helpKey = "help",
+    } = {}
   ) {
     this.createClient(token, partials, activity);
     this.createHandler();
@@ -38,28 +42,29 @@ class TumultController {
      * Collection of the message commands
      * @type {Collection<String, tumultCommand>}
      */
-    this.commands = TumultDiscordUtility.arrayToCollectionCommand(commands);
+    this.messageCommands = TumultDiscordUtility.arrayToCollectionCommand(
+      messageCommands
+    );
     // this.reactions = reaction;
     /**
      * Options gave by the user, forwarded to every command.
      * @type {Object}
      */
     this.options = options;
-
-    /**
-     * Object containing configuration information. TODO -> change (contain only help)
-     * @type {Object}
-     */
-    this.config = config;
     /**
      * Object containing permission information. TODO -> change to a class / structure specific as it has a special format
      * @type {Object}
      */
     this.permission = permission;
+    /**
+     * The key used to call the help message on any command
+     * @type {String}
+     */
+    this.helpKey = helpKey;
   }
 
   // TODO -> add "_" in front of non doc function (private)
-  createClient(token, partials, activity = "mention me + help") {
+  createClient(token, partials, activity) {
     this.client = new Client({ partials });
     this.client.on("ready", () => {
       console.log("Starting!");
@@ -78,7 +83,7 @@ class TumultController {
    * @param {TumultCommand|Array.<TumultCommand>} commands The commands to add to the controller
    * @param {Arrat<String>} [path=[]] The path where to add the command. Each element should be the name of a command, the first one being at the root.
    */
-  addCommands(commands, path = []) {
+  addMessageCommands(commands, path = []) {
     if (!Array.isArray(commands)) {
       commands = [commands];
     }
@@ -91,7 +96,7 @@ class TumultController {
     if (!Array.isArray(path)) {
       throw "Path need to be an array";
     }
-    let cmd = this.commands;
+    let cmd = this.messageCommands;
     while (path.length > 0 && cmd.has(path[0])) {
       cmd = cmd.get(path.shift()).subCommand; // pop on first element
     }
@@ -109,7 +114,7 @@ class TumultController {
    * @param {String|Array<String>} commandsName The names of the commands to remove from the controller
    * @param {Arrat<String>} [path=[]] The path to the commands to be removed. Each element should be the name of a command, the first one being at the root.
    */
-  removeCommands(commandsName, path = []) {
+  removeMessageCommands(commandsName, path = []) {
     if (!Array.isArray(commandsName)) {
       commandsName = [commandsName];
     }
@@ -119,7 +124,7 @@ class TumultController {
     if (typeof path === "string") {
       path = [path];
     }
-    let cmd = this.commands;
+    let cmd = this.messageCommands;
     while (path.length > 0 && cmd.has(path[0])) {
       cmd = cmd.get(path.shift()).subCommand; // pop on first element
     }
@@ -195,10 +200,10 @@ class TumultController {
       console.log("INFO: DM message received");
       message.reply("There's no DM functionality");
     } else if (message.channel.type === "text") {
-      this.handleCommands(this.commands, message, message.content);
+      this.handleCommands(this.messageCommands, message, message.content);
     }
   }
-
+  // TODO -> change name / behaviour to match all command
   async handleCommands(commands, message, argText) {
     const keys = commands.keys();
     let done = false;
@@ -234,7 +239,7 @@ class TumultController {
         return false;
       }
       console.log("ARG", resParser.arg);
-      if (resParser.arg === this.config.help) {
+      if (resParser.arg === this.helpKey) {
         message.channel.send(command.help.call(command));
         return true;
       }
