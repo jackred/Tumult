@@ -2,7 +2,7 @@
   "parserOptions": {
     "ecmaVersion": 2019
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "rules": {
     "semi": ["error", "always"],
     "quotes": ["error", "double"]
