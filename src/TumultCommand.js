@@ -7,7 +7,7 @@
 "use string";
 
 const TumultParser = require("./TumultParser");
-const TumultBuildMessages = require("./TumultBuildMesages.js");
+const TumultBuildMessages = require("./TumultBuildMesages");
 const TumultDiscordUtility = require("./TumultDiscordUtility");
 
 /**

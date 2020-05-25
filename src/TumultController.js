@@ -8,8 +8,8 @@
 
 const { Client } = require("discord.js");
 const TumultDiscordUtility = require("./TumultDiscordUtility");
-const TumultBuildMessages = require("./TumultBuildMesages.js");
-const TumultCommand = require("./TumultCommand.js");
+const TumultBuildMessages = require("./TumultBuildMesages");
+const TumultCommand = require("./TumultCommand");
 
 /**
  * Wrapper around the client, provide interface for events handling and command
@@ -179,9 +179,9 @@ class TumultController {
     return this.permission.level.default;
   }
 
-  async handleReactionAdd() { } //}reaction, user) { }
+  async handleReactionAdd() {} //}reaction, user) { }
 
-  async handleVocalMessage() { } //}member, speaking) { }
+  async handleVocalMessage() {} //}member, speaking) { }
 
   async catchErrorCommand(fn, channel) {
     try {
