@@ -10,8 +10,13 @@ module.exports = {
   Controller: require("./TumultController"),
   Command: require("./TumultCommand"),
   Parser: require("./TumultParser"),
+  USet: require("./TumultSet"),
 };
 
+/**
+ * @external Snowflake
+ * @see {@link https://discord.js.org/#/docs/main/stable/typedef/Snowflake}
+ */
 /**
  * @external Collection
  * @see {@link https://discord.js.org/#/docs/main/master/class/Collection}
