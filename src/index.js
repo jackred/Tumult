@@ -10,6 +10,8 @@ module.exports = {
   Controller: require("./TumultController"),
   Command: require("./TumultCommand"),
   Parser: require("./TumultParser"),
+  Permission: require("./TumultPermission").TumultPermission,
+  Right: require("./TumultPermission").TumultRight,
   USet: require("./TumultSet"),
 };
 
