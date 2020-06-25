@@ -4,9 +4,9 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
-const TumultSet = require("./TumultSet");
+const TumultSet = require('./TumultSet');
 
 /**
  * Structures used
@@ -16,7 +16,7 @@ const TumultSet = require("./TumultSet");
  * @param {...Object} options.rights
  */
 class TumultPermission {
-  constructor({ blacklist = {}, everyone = "everyone", ...rights } = {}) {
+  constructor({ blacklist = {}, everyone = 'everyone', ...rights } = {}) {
     const handler = {
       set: (target, prop, value) => {
         let tmpRight = new TumultRight(value);
@@ -112,17 +112,17 @@ class TumultRight {
     discordPermissions = [],
     otherRight = [],
   } = []) {
-    this.createSet("_users", users);
-    this.createSet("_roles", roles);
-    this.createSet("_channels", channels);
-    this.createSet("_discordPermissions", discordPermissions);
-    this.createSet("_otherRight", otherRight);
+    this.createSet('_users', users);
+    this.createSet('_roles', roles);
+    this.createSet('_channels', channels);
+    this.createSet('_discordPermissions', discordPermissions);
+    this.createSet('_otherRight', otherRight);
     this._rightName = [
-      "_users",
-      "_roles",
-      "_channels",
-      "_discordPermissions",
-      "_otherRight",
+      '_users',
+      '_roles',
+      '_channels',
+      '_discordPermissions',
+      '_otherRight',
     ];
     this.createSetters();
   }
@@ -132,7 +132,7 @@ class TumultRight {
     if (permission instanceof TumultPermission) {
       this._permission = permission;
     } else {
-      throw "permission should be an instance of Tumult.Permission";
+      throw 'permission should be an instance of Tumult.Permission';
     }
   }
 
@@ -141,19 +141,19 @@ class TumultRight {
   }
 
   updateCachedRightOfPermission() {
-    let msg = "false";
+    let msg = 'false';
     if (this._permission !== undefined) {
       this._permission.updateCachedRight();
-      msg = " true";
+      msg = ' true';
     }
     //console.log("updateRight", msg);
   }
 
   updateCachedSetOfPermission() {
-    let msg = "false";
+    let msg = 'false';
     if (this._permission !== undefined) {
       this._permission.updateCachedSet();
-      msg = " true";
+      msg = ' true';
     }
     //console.log("updateSet", msg);
   }
@@ -168,7 +168,7 @@ class TumultRight {
   createSet(propertyName, value) {
     const tmp = new TumultSet(value);
     const updateFunction =
-      propertyName === "_otherRight"
+      propertyName === '_otherRight'
         ? this.updateCachedSetOfPermission
         : this.updateCachedRightOfPermission;
     tmp.updateFunction = updateFunction.bind(this);
@@ -177,10 +177,10 @@ class TumultRight {
         if (name in target.__proto__) {
           // from https://stackoverflow.com/questions/43236329/why-is-proxy-to-a-map-object-in-es2015-not-working
           let ret = Reflect.get(target, name);
-          if (typeof ret === "function") {
+          if (typeof ret === 'function') {
             ret = ret.bind(target);
             if (
-              ["add", "delete", "clear"].includes(name) &&
+              ['add', 'delete', 'clear'].includes(name) &&
               this.__cache !== false
             ) {
               return (...args) => {

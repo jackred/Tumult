@@ -4,27 +4,27 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
-const assert = require("assert");
-const Tumult = require("../src");
-const test = require("./test");
+const assert = require('assert');
+const Tumult = require('../src');
+const test = require('./test');
 
-test("create permission", () => {
+test('create permission', () => {
   const permission = new Tumult.Permission();
-  assert.strictEqual(permission.everyone, "everyone");
-  assert.deepStrictEqual(Object.keys(permission.rights), ["blacklist"]);
+  assert.strictEqual(permission.everyone, 'everyone');
+  assert.deepStrictEqual(Object.keys(permission.rights), ['blacklist']);
 });
 
-test("create permissionhh with arguments", () => {
+test('create permissionhh with arguments', () => {
   const permission = new Tumult.Permission({
     whitelist: { users: [1, 2, 3] },
-    everyone: "default",
+    everyone: 'default',
   });
-  assert.strictEqual(permission.everyone, "default");
+  assert.strictEqual(permission.everyone, 'default');
   assert.deepStrictEqual(Object.keys(permission.rights), [
-    "blacklist",
-    "whitelist",
+    'blacklist',
+    'whitelist',
   ]);
   assert.deepStrictEqual(Array.from(permission.rights.whitelist.users), [
     1,
@@ -33,19 +33,19 @@ test("create permissionhh with arguments", () => {
   ]);
 });
 
-test("create cached rights", () => {
+test('create cached rights', () => {
   const permission = new Tumult.Permission({
-    whitelist: { users: [1, 2, 3], otherRight: ["mod", "blacklist"] },
-    mod: { users: [2, 4], otherRight: ["admins"] },
+    whitelist: { users: [1, 2, 3], otherRight: ['mod', 'blacklist'] },
+    mod: { users: [2, 4], otherRight: ['admins'] },
     admins: { users: [1, 5] },
     blacklist: { users: [6] },
   });
   const cachedKeys = Object.keys(permission._cachedRights);
   assert.deepStrictEqual(Array.from(cachedKeys), [
-    "blacklist",
-    "whitelist",
-    "mod",
-    "admins",
+    'blacklist',
+    'whitelist',
+    'mod',
+    'admins',
   ]);
   assert.deepStrictEqual(
     Array.from(permission._cachedRights.blacklist.derivedRight.users),
@@ -86,19 +86,19 @@ test("create cached rights", () => {
   );
 });
 
-test("add right to permission", () => {
+test('add right to permission', () => {
   const permission = new Tumult.Permission({
     whitelist: { users: [1, 2, 3] },
   });
   const right = new Tumult.Right({
     users: [4, 5, 6],
-    otherRight: ["whitelist"],
+    otherRight: ['whitelist'],
   });
   permission.rights.mod = right;
   assert.deepStrictEqual(Object.keys(permission.rights), [
-    "blacklist",
-    "whitelist",
-    "mod",
+    'blacklist',
+    'whitelist',
+    'mod',
   ]);
   assert.deepStrictEqual(
     Array.from(permission._cachedRights.mod.derivedRight.users),
@@ -110,14 +110,14 @@ test("add right to permission", () => {
   ]);
 });
 
-test("remove right from permission", () => {
+test('remove right from permission', () => {
   const permission = new Tumult.Permission({
     whitelist: { users: [1, 2, 3] },
-    blacklist: { users: [4], otherRight: ["whitelist"] },
+    blacklist: { users: [4], otherRight: ['whitelist'] },
   });
   delete permission.rights.whitelist;
-  assert.deepStrictEqual(Object.keys(permission.rights), ["blacklist"]);
-  assert.deepStrictEqual(Object.keys(permission._cachedRights), ["blacklist"]);
+  assert.deepStrictEqual(Object.keys(permission.rights), ['blacklist']);
+  assert.deepStrictEqual(Object.keys(permission._cachedRights), ['blacklist']);
   assert.deepStrictEqual(
     Array.from(permission._cachedRights.blacklist.derivedRight.users),
     [4]
@@ -128,15 +128,15 @@ test("remove right from permission", () => {
   );
 });
 
-test("set new value to right", () => {
+test('set new value to right', () => {
   const permission = new Tumult.Permission({
     whitelist: { users: [1, 2, 3] },
-    blacklist: { users: [4], otherRight: ["whitelist"] },
+    blacklist: { users: [4], otherRight: ['whitelist'] },
     mod: { users: [7] },
   });
   permission.rights.whitelist = new Tumult.Right({
     users: [5, 6],
-    otherRight: ["blacklist"],
+    otherRight: ['blacklist'],
   });
   permission.rights.mod = { users: [8] };
   assert.deepStrictEqual(Array.from(permission.rights.whitelist.users), [5, 6]);
@@ -166,14 +166,14 @@ test("set new value to right", () => {
   ]);
 });
 
-test("modify a right value", () => {
+test('modify a right value', () => {
   const permission = new Tumult.Permission({
     whitelist: { users: [1, 2, 3] },
-    blacklist: { users: [4], otherRight: ["whitelist"] },
+    blacklist: { users: [4], otherRight: ['whitelist'] },
     mod: { users: [7] },
   });
   permission.rights.mod.users.add(4);
-  permission.rights.whitelist.otherRight.add("mod");
+  permission.rights.whitelist.otherRight.add('mod');
   permission.rights.whitelist.users.delete(1);
   permission.rights.blacklist.users.clear();
   permission.rights.blacklist.users = [78];

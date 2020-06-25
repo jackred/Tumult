@@ -4,12 +4,12 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
-const { Client } = require("discord.js");
-const TumultDiscordUtility = require("./TumultDiscordUtility");
-const TumultBuildMessages = require("./TumultBuildMesages");
-const TumultCommand = require("./TumultCommand");
+const { Client } = require('discord.js');
+const TumultDiscordUtility = require('./TumultDiscordUtility');
+const TumultBuildMessages = require('./TumultBuildMesages');
+const TumultCommand = require('./TumultCommand');
 
 /**
  * Wrapper around the client, provide interface for events handling and command
@@ -31,9 +31,9 @@ class TumultController {
     {
       options = {},
       partials = [],
-      activity = "mention me + help",
+      activity = 'mention me + help',
       messageCommands = [],
-      helpKey = "help",
+      helpKey = 'help',
     } = {}
   ) {
     this.createClient(token, partials, activity);
@@ -66,8 +66,8 @@ class TumultController {
   // TODO -> add "_" in front of non doc function (private)
   createClient(token, partials, activity) {
     this.client = new Client({ partials });
-    this.client.on("ready", () => {
-      console.log("Starting!");
+    this.client.on('ready', () => {
+      console.log('Starting!');
       // TODO -> change for setPresence
       // TODO -> command to change presence
       this.client.user.setActivity(activity);
@@ -90,11 +90,11 @@ class TumultController {
     for (let command of commands) {
       if (!(command instanceof TumultCommand)) {
         // TODO -> error system
-        throw "Argument commands should be an instance of TumultCommand, or an array of TumultCommand";
+        throw 'Argument commands should be an instance of TumultCommand, or an array of TumultCommand';
       }
     }
     if (!Array.isArray(path)) {
-      throw "Path need to be an array";
+      throw 'Path need to be an array';
     }
     let cmd = this.messageCommands;
     while (path.length > 0 && cmd.has(path[0])) {
@@ -119,9 +119,9 @@ class TumultController {
       commandsName = [commandsName];
     }
     if (!Array.isArray(path)) {
-      throw "Path need to be an array";
+      throw 'Path need to be an array';
     }
-    if (typeof path === "string") {
+    if (typeof path === 'string') {
       path = [path];
     }
     let cmd = this.messageCommands;
@@ -135,7 +135,7 @@ class TumultController {
     if (unknownCommands.length !== 0) {
       throw `${unknownCommands
         .toString()
-        .replace(/,/, ", ")} are not valid commands`;
+        .replace(/,/, ', ')} are not valid commands`;
     }
     for (let commandName of commandsName) {
       cmd.delete(commandName);
@@ -144,7 +144,7 @@ class TumultController {
   }
 
   createHandler() {
-    this.client.on("message", this.handleMessage.bind(this));
+    this.client.on('message', this.handleMessage.bind(this));
     // this.client.on("guildMemberSpeaking", this.handleVocalMessage.bind(this));
     // this.client.on("messageReactionAdd", this.handleReactionAdd.bind(this));
     // this.client.on("messageReactionRemove", this.handleReaction.bind(this));
@@ -155,25 +155,25 @@ class TumultController {
   }
 
   checkRolesPermission(roles, level) {
-    return roles.some((r) => this.checkPermission(r.id, level, "roles"));
+    return roles.some((r) => this.checkPermission(r.id, level, 'roles'));
   }
 
   checkLevelMessage(authorID, roles, channelID, level) {
     return (
-      this.checkPermission(authorID, level, "users") ||
+      this.checkPermission(authorID, level, 'users') ||
       this.checkRolesPermission(roles, level) ||
-      this.checkPermission(channelID, level, "channels")
+      this.checkPermission(channelID, level, 'channels')
     );
   }
 
   getPermission(authorID, roles, channelID) {
-    if (this.checkLevelMessage(authorID, roles, channelID, "blacklist")) {
+    if (this.checkLevelMessage(authorID, roles, channelID, 'blacklist')) {
       return this.permission.level.blacklist;
     }
-    if (this.checkLevelMessage(authorID, roles, channelID, "whitelist")) {
+    if (this.checkLevelMessage(authorID, roles, channelID, 'whitelist')) {
       return this.permission.level.whitelist;
     }
-    if (this.checkLevelMessage(authorID, roles, channelID, "admins")) {
+    if (this.checkLevelMessage(authorID, roles, channelID, 'admins')) {
       return this.permission.level.admins;
     }
     return this.permission.level.default;
@@ -196,10 +196,10 @@ class TumultController {
     if (message.author.bot) {
       return;
     }
-    if (message.channel.type === "dm") {
-      console.log("INFO: DM message received");
+    if (message.channel.type === 'dm') {
+      console.log('INFO: DM message received');
       message.reply("There's no DM functionality");
-    } else if (message.channel.type === "text") {
+    } else if (message.channel.type === 'text') {
       this.handleCommands(this.messageCommands, message, message.content);
     }
   }
@@ -210,7 +210,7 @@ class TumultController {
     let res = false;
     while (!done && !res) {
       const key = keys.next();
-      console.log("KEY", key);
+      console.log('KEY', key);
       done = key.done;
       if (!done) {
         res = await this.handleCommandMessage(
@@ -218,7 +218,7 @@ class TumultController {
           message,
           argText
         );
-        console.log("RES", res);
+        console.log('RES', res);
       }
     }
     return res;
@@ -226,7 +226,7 @@ class TumultController {
 
   async handleCommandMessage(command, message, text) {
     const resParser = command.parser(text, command.name);
-    console.log("res", resParser);
+    console.log('res', resParser);
     if (resParser.commandCalled) {
       console.log(`INFO: command ${command.name} has been call`);
       const permissionLevel = this.getPermission(
@@ -235,10 +235,10 @@ class TumultController {
         message.channel.id
       );
       if (permissionLevel < command.permission) {
-        this.sendError(message.channel, "Insufficient permission");
+        this.sendError(message.channel, 'Insufficient permission');
         return false;
       }
-      console.log("ARG", resParser.arg);
+      console.log('ARG', resParser.arg);
       if (resParser.arg === this.helpKey) {
         message.channel.send(command.help.call(command));
         return true;

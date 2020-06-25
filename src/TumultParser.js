@@ -4,7 +4,7 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
 /**
  * Parse for prefix in a message. It check that the message start with the prefix and return the argument and a boolean. TODO -> make return type a structure. TODO -> make the prefix integrated in the type of command
@@ -13,8 +13,8 @@
  * @returns {Object}
  */
 function prefixParser(text, prefix) {
-  if (text.startsWith(prefix) && text.substring(prefix) !== " ") {
-    let rest = text.replace(prefix, "");
+  if (text.startsWith(prefix) && text.substring(prefix) !== ' ') {
+    let rest = text.replace(prefix, '');
     return { arg: rest.trim(), commandCalled: true };
   }
   return { commandCalled: false };
@@ -27,12 +27,12 @@ function prefixParser(text, prefix) {
  * @param {String} separatorword The separator used to separe world
  * @returns {Object}
  */
-function defaultParser(text, word, separatorWord = " ") {
+function defaultParser(text, word, separatorWord = ' ') {
   if (
     text === word ||
     (text.startsWith(word) && text.substring(word.length)[0] === separatorWord)
   ) {
-    let rest = text.replace(word, "");
+    let rest = text.replace(word, '');
     return { arg: rest.trim(), commandCalled: true };
   }
   return { commandCalled: false };

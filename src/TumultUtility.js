@@ -4,7 +4,7 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
 /* utility function */
 function random2Int(a, b) {
@@ -28,7 +28,7 @@ function splitIn2(text, cut) {
 }
 
 function reduceWhitespace(text) {
-  return text.replace(/\s\s+/g, " ").trim().split(" ");
+  return text.replace(/\s\s+/g, ' ').trim().split(' ');
 }
 
 module.exports = {

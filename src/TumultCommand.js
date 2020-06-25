@@ -4,11 +4,11 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use string";
+'use string';
 
-const TumultParser = require("./TumultParser");
-const TumultBuildMessages = require("./TumultBuildMesages");
-const TumultDiscordUtility = require("./TumultDiscordUtility");
+const TumultParser = require('./TumultParser');
+const TumultBuildMessages = require('./TumultBuildMesages');
+const TumultDiscordUtility = require('./TumultDiscordUtility');
 
 /**
  * A command that will be called if it's name is send as a message
@@ -31,8 +31,8 @@ class TumultCommand {
     {
       permission = 0,
       subCommand = [],
-      generalHelp = "",
-      help = "",
+      generalHelp = '',
+      help = '',
       parser = TumultParser.defaultParser,
     } = {}
   ) {
@@ -89,21 +89,21 @@ class TumultCommand {
     return msg;
   }
 
-  createHelp(toSet, defaultFn = () => "") {
+  createHelp(toSet, defaultFn = () => '') {
     let result;
     switch (typeof toSet) {
-      case "string":
-        if (toSet === "") {
+      case 'string':
+        if (toSet === '') {
           result = defaultFn;
         } else {
           result = () => toSet;
         }
         break;
-      case "function":
+      case 'function':
         result = toSet;
         break;
       default:
-        throw "Wrong parameters given as command constructor. Help parameter should be either string or function";
+        throw 'Wrong parameters given as command constructor. Help parameter should be either string or function';
     }
     return result;
   }

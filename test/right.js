@@ -4,29 +4,29 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
-const assert = require("assert");
-const Tumult = require("../src");
-const test = require("./test");
+const assert = require('assert');
+const Tumult = require('../src');
+const test = require('./test');
 
-test("create right", () => {
+test('create right', () => {
   const right = new Tumult.Right();
   const keys = Object.keys(right);
   const arrayEqual = [
-    "_users",
-    "_roles",
-    "_channels",
-    "_discordPermissions",
-    "_otherRight",
+    '_users',
+    '_roles',
+    '_channels',
+    '_discordPermissions',
+    '_otherRight',
   ];
   assert.deepStrictEqual(right._rightName, arrayEqual);
-  arrayEqual.push("_rightName");
+  arrayEqual.push('_rightName');
   assert.deepStrictEqual(keys, arrayEqual);
   assert.strictEqual(right._users.size, 0);
 });
 
-test("create right with arguments", () => {
+test('create right with arguments', () => {
   const right = new Tumult.Right({
     users: [1, 8],
     roles: new Set([4, 5]),
@@ -36,7 +36,7 @@ test("create right with arguments", () => {
   assert.deepStrictEqual(Array.from(right._roles), [4, 5]);
 });
 
-test("use getters", () => {
+test('use getters', () => {
   const right = new Tumult.Right({
     users: [1, 2, 3],
   });
@@ -46,7 +46,7 @@ test("use getters", () => {
   assert.ok(!right.users.has(4));
 });
 
-test("use setters", () => {
+test('use setters', () => {
   const right = new Tumult.Right({});
   right.users = [1, 2, 3];
   right.roles = new Set([44, 7]);
@@ -55,14 +55,14 @@ test("use setters", () => {
   assert.throws(() => (right.users = 7), { name: /^TypeError$/ });
 });
 
-test("clear set", () => {
+test('clear set', () => {
   const right = new Tumult.Right({ users: [1], roles: [2] });
   right.clear();
   assert.strictEqual(right.users.size, 0);
   assert.strictEqual(right.roles.size, 0);
 });
 
-test("concat others rights", () => {
+test('concat others rights', () => {
   const right1 = new Tumult.Right({ users: [1] });
   const right2 = { users: [3] };
   const right3 = new Tumult.Right({ users: [2] });
@@ -74,7 +74,7 @@ test("concat others rights", () => {
   assert.deepStrictEqual(Array.from(right3._users), [2, 1, 3]);
 });
 
-test("an union of rights", () => {
+test('an union of rights', () => {
   const right1 = new Tumult.Right({ users: [1] });
   const right2 = new Tumult.Right({ users: [2] });
   const right3 = Tumult.Right.union(right1, right2);

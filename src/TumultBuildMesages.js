@@ -4,9 +4,9 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed } = require('discord.js');
 
 function buildErrorMessage(title, error, { color = [255, 0, 0] } = {}) {
   let embed = new MessageEmbed();
@@ -22,11 +22,11 @@ function buildCommandErrorMessage(nameCommand, error) {
 }
 
 function buildControllerErrorMessage(error) {
-  return buildErrorMessage("Unexpected internal error", error);
+  return buildErrorMessage('Unexpected internal error', error);
 }
 
 function buildWarningMessage(warning) {
-  return buildErrorMessage("Warning", warning, { color: [200, 180, 0] });
+  return buildErrorMessage('Warning', warning, { color: [200, 180, 0] });
 }
 
 function buildHelpMessage(

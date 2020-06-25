@@ -4,7 +4,7 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
 // copied from discord.js/collection test
 function test(desc, fn) {

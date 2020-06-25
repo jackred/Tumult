@@ -4,15 +4,15 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
-"use strict";
+'use strict';
 
 module.exports = {
-  Controller: require("./TumultController"),
-  Command: require("./TumultCommand"),
-  Parser: require("./TumultParser"),
-  Permission: require("./TumultPermission").TumultPermission,
-  Right: require("./TumultPermission").TumultRight,
-  USet: require("./TumultSet"),
+  Controller: require('./TumultController'),
+  Command: require('./TumultCommand'),
+  Parser: require('./TumultParser'),
+  Permission: require('./TumultPermission').TumultPermission,
+  Right: require('./TumultPermission').TumultRight,
+  USet: require('./TumultSet'),
 };
 
 /**
