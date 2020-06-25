@@ -122,10 +122,9 @@ test('remove right from permission', () => {
     Array.from(permission._cachedRights.blacklist.derivedRight.users),
     [4]
   );
-  assert.deepStrictEqual(
-    Array.from(permission._cachedRights.blacklist.derivedSet),
-    [permission.rights.blacklist]
-  );
+  assert.deepStrictEqual(Array.from(permission._.blacklist.derivedSet), [
+    permission.rights.blacklist,
+  ]);
 });
 
 test('set new value to right', () => {
