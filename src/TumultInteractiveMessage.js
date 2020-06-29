@@ -7,11 +7,30 @@
 'use strict';
 
 class TumultInteractiveMessage {
-  constructor() {}
+  constructor(renderFn, emojiMap, internalData = {}) {
+    this.renderFn = renderFn;
+    this.emojiMap = emojiMap;
+    this.internalData = internalData;
+    this.render();
+  }
 
-  react() {}
+  react(emojiName) {
+    const shouldRender = this.handleReact(emojiName);
+    if (shouldRender) {
+      this.render();
+    }
+  }
 
-  handleReact() {}
+  handleReact(emojiName) {
+    if (emojiName in this.emojiMap) {
+      return this.emojiMap[emojiName].call(this);
+    }
+    return false;
+  }
 
-  render() {}
+  render() {
+    this.body = this.renderFn(this.internalData);
+  }
 }
+
+module.exports = TumultInteractiveMessage;
