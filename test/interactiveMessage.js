@@ -53,11 +53,11 @@ test('create interactive message', () => {
 test('handleReact on interactive message', () => {
   const list1 = new Tumult.InteractiveMessage(
     render1D,
-    { '➡': reactArrow, '+': reactNothing },
+    { '➡': reactArrow, '-': reactNothing },
     { data: ['Hey text', 'Nope'], i: 0 }
   );
   const res = list1.handleReact('➡');
-  const res2 = list1.handleReact('+');
+  const res2 = list1.handleReact('-');
   const res3 = list1.handleReact('not reacting');
   assert.strictEqual(res, true);
   assert.strictEqual(res2, false);
@@ -65,18 +65,18 @@ test('handleReact on interactive message', () => {
   assert.strictEqual(list1.internalData.i, 1);
 });
 
-test('handleRreact and render interactive message', () => {
+test('render interactive message', () => {
   const list1 = new Tumult.InteractiveMessage(
     render1D,
     { '➡': reactArrow },
     { data: ['Hey text', 'Nope'], i: 0 }
   );
-  list1.handleReact('➡');
+  list1.internalData.i = 1;
   list1.render();
   assert.strictEqual(list1.body, 'Nope');
   const list2 = new Tumult.InteractiveMessage(
     render2D,
-    { '➡': reactArrow, '⏬': reactPlus },
+    { '➡': reactArrow, '+': reactPlus },
     {
       data: [
         ['Hey text', 'Hey text verbose 1'],
@@ -86,8 +86,8 @@ test('handleRreact and render interactive message', () => {
       p: 0,
     }
   );
-  list2.handleReact('➡');
-  list2.handleReact('⏬');
+  list2.internalData.i = 1;
+  list2.internalData.p = 1;
   list2.render();
   assert.strictEqual(list2.body, 'Nope but longer');
 });
