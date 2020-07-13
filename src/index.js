@@ -11,6 +11,7 @@ module.exports = {
   Command: require('./TumultCommand'),
   Parser: require('./TumultParser'),
   InteractiveMessage: require('./TumultInteractiveMessage'),
+  InteractiveEmbedMessage: require('./TumultInteractiveEmbedMessage'),
   Permission: require('./TumultPermission').TumultPermission,
   Right: require('./TumultPermission').TumultRight,
   USet: require('./TumultSet'),
