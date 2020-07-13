@@ -11,6 +11,10 @@ class TumultInteractiveMessage {
     this.renderFn = renderFn;
     this.emojiMap = emojiMap;
     this.internalData = internalData;
+    this.init();
+  }
+
+  init() {
     this.render();
   }
 
