@@ -9,12 +9,20 @@
 /**
  * A modified version of the Set type which allow multiple argument for add and delete
  * @extends {Set}
+ * @template T
  */
 class TumultSet extends Set {
+  /**
+   * @constructor
+   * @param{T[]} [iterable=[]]
+   */
   constructor(iterable = []) {
     super(iterable);
   }
 
+  /**
+   * @param{...T} elements the elements to add to the set, one by one
+   */
   add(...elements) {
     for (let element of elements) {
       super.add(element);
@@ -22,6 +30,9 @@ class TumultSet extends Set {
     return this;
   }
 
+  /**
+   * @param{...T} elements the elements to delete from the set, one by one
+   */
   delete(...elements) {
     return elements.reduce((acc, elt) => super.delete(elt) && acc, true);
   }

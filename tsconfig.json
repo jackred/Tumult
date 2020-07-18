@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dev/out/",
+    "checkJs": true,
+    "allowJs": true,
+    "strict": true,
+    "module": "commonjs",
+    "target": "es2019"    
+  },
+  "include": [
+    "./src/TumultSet.js"
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}
