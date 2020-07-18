@@ -23,7 +23,7 @@ class TumultSet extends Set {
   }
 
   delete(...elements) {
-    return elements.map((elt) => super.delete(elt));
+    return elements.reduce((acc, elt) => super.delete(elt) && acc, true);
   }
 }
 

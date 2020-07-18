@@ -27,12 +27,7 @@ test('adding element', () => {
 
 test('deleting element', () => {
   const uset = new Tumult.USet([1, 2, 3, 4, 5, 6]);
-  assert.deepStrictEqual(Array.from(uset.delete(1)), [true]);
-  assert.deepStrictEqual(Array.from(uset.delete(1, 2, 3, 44)), [
-    false,
-    true,
-    true,
-    false,
-  ]);
+  assert.ok(uset.delete(1));
+  assert.ok(!uset.delete(1, 2, 3));
   assert.deepStrictEqual(Array.from(uset), [4, 5, 6]);
 });
