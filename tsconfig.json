@@ -6,10 +6,12 @@
     "checkJs": false,
     "module": "commonjs",
     "target": "es2019",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
