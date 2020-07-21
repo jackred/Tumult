@@ -4,6 +4,8 @@
 //If a copy of the ML was not distributed with this
 //file, You can obtain one at https://opensource.org/licenses/MIT
 //author: JackRed <jackred@tuta.io>
+
+// @ts-check
 'use strict';
 
 /**
@@ -31,7 +33,7 @@ class TumultSet extends Set {
   }
 
   /**
-   * @param{...T} elements the elements to delete from the set, one by one
+   * @param{T} elements the elements to delete from the set, one by one
    */
   delete(...elements) {
     return elements.reduce((acc, elt) => super.delete(elt) && acc, true);
