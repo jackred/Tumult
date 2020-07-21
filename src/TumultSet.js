@@ -26,6 +26,9 @@ class TumultSet extends Set {
    * @param{...T} elements the elements to add to the set, one by one
    */
   add(...elements) {
+    if (elements.length === 0) {
+      elements = [undefined];
+    }
     for (let element of elements) {
       super.add(element);
     }
@@ -36,6 +39,9 @@ class TumultSet extends Set {
    * @param{T} elements the elements to delete from the set, one by one
    */
   delete(...elements) {
+    if (elements.length === 0) {
+      elements = [undefined];
+    }
     return elements.reduce((acc, elt) => super.delete(elt) && acc, true);
   }
 }
