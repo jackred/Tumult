@@ -10,20 +10,21 @@
 
 /**
  * A modified version of the Set type which allow multiple argument for add and delete
+ * @template {any} T
  * @extends {Set}
- * @template T
  */
 class TumultSet extends Set {
   /**
    * @constructor
-   * @param{T[]} [iterable=[]]
+   * @param {T[]} [iterable=[]] If an iterable object is passed, all of its elements will be added to the new Set. If you don't specify this parameter, or its value is null, the new Set is empty.
    */
   constructor(iterable = []) {
     super(iterable);
   }
 
   /**
-   * @param{...T} elements the elements to add to the set, one by one
+   * @param {...T | undefined} elements the elements to add to the set, one by one
+   * @returns {TumultSet<T>}
    */
   add(...elements) {
     if (elements.length === 0) {
@@ -36,7 +37,8 @@ class TumultSet extends Set {
   }
 
   /**
-   * @param{T} elements the elements to delete from the set, one by one
+   * @param {...T | undefined} elements the elements to delete from the set, one by one
+   * @returns {boolean}
    */
   delete(...elements) {
     if (elements.length === 0) {
