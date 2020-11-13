@@ -69,9 +69,12 @@ class TumultPermission {
   getDerivedSet(rights) {
     let allRight = new TumultSet([rights]);
     let queue = new TumultSet(rights.otherRight);
+    console.log(queue);
     for (let right of queue) {
       allRight.add(this.rights[right]);
-      queue.add(...this.rights[right].otherRight);
+      if (this.rights[right].otherRight.size !== 0) {
+        queue.add(...this.rights[right].otherRight);
+      }
     }
     return allRight;
   }
