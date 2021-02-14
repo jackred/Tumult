@@ -257,7 +257,7 @@ class TumultController {
           this.sendErrorCommand(message.channel, command.name, error);
           return false;
         });
-      return true;
+      return stopHere;
     }
     return false;
   }
