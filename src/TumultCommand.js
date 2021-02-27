@@ -16,7 +16,7 @@ const TumultDiscordUtility = require('./TumultDiscordUtility');
  */
 class TumultCommand {
   /**
-   * @param {String} name The name of the command, which will be used to call it
+   * @param {String|Array<String>} name The names of the command, which will be used to call it
    * @param {Function} action The function the command will execute when called. TODO -> not mandatory. Make Prefix Command and Action Command
    * @param {Object} [options={}] Configuration options for the commands
    * @param {Number} [options.permission=0]
@@ -43,9 +43,13 @@ class TumultCommand {
      * The name of the command, which will be used to call it
      * @type {String}
      */
+    if (typeof name === 'string') {
+      name = [name];
+    }
     this.name = name; // string
     this.action = action; // function
     this.subCommand = TumultDiscordUtility.arrayToCollectionCommand(subCommand); // array of Command
+    this.setSubCommand = new Set(this.subCommand.values());
     this.generalHelp = this.createHelp(generalHelp);
     this.help = this.createHelp(help, this.defaultBuildHelp); // function > string
     this.permission = permission; // int

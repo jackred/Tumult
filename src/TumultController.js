@@ -45,6 +45,7 @@ class TumultController {
     this.messageCommands = TumultDiscordUtility.arrayToCollectionCommand(
       messageCommands
     );
+    this.setMessageCommands = new Set(this.messageCommands.values());
     // this.reactions = reaction;
     /**
      * Options gave by the user, forwarded to every command.
@@ -107,6 +108,7 @@ class TumultController {
       cmd.set(command.name, command);
       console.log(`INFO: command ${command.name} added`);
     }
+    this.setMessageCommands = new Set(this.messageCommands.values());
   }
 
   /**
@@ -141,6 +143,7 @@ class TumultController {
       cmd.delete(commandName);
       console.log(`INFO: command ${commandName} removed`);
     }
+    this.setMessageCommands = new Set(this.messageCommands.values());
   }
 
   createHandler() {
@@ -200,24 +203,20 @@ class TumultController {
       console.log('INFO: DM message received');
       message.reply("There's no DM functionality");
     } else if (message.channel.type === 'text') {
-      this.handleCommands(this.messageCommands, message, message.content);
+      this.handleCommands(this.setMessageCommands, message, message.content);
     }
   }
   // TODO -> change name / behaviour to match all command
   async handleCommands(commands, message, argText) {
-    const keys = commands.keys();
-    let done = false;
+    const cmds = commands.values();
     let res = false;
-    while (!done && !res) {
-      const key = keys.next();
-      console.log('KEY', key);
-      done = key.done;
+    let done = false;
+    while (!res && !done) {
+      const cmd = cmds.next();
+      done = cmd.done;
       if (!done) {
-        res = await this.handleCommandMessage(
-          commands.get(key.value),
-          message,
-          argText
-        );
+        console.log('KEYS', cmd.value.name);
+        res = await this.handleCommandMessage(cmd.value, message, argText);
         console.log('RES', res);
       }
     }
@@ -225,7 +224,13 @@ class TumultController {
   }
 
   async handleCommandMessage(command, message, text) {
-    const resParser = command.parser(text, command.name);
+    let resParser;
+    let i = 0;
+    do {
+      resParser = command.parser(text, command.name[i]);
+      console.log('res ->', resParser, i, command.name[i]);
+      i++;
+    } while (i <= command.name.length && !resParser.commandCalled);
     console.log('res', resParser);
     if (resParser.commandCalled) {
       console.log(`INFO: command ${command.name} has been call`);
@@ -244,7 +249,7 @@ class TumultController {
         return true;
       }
       let stopHere = await this.handleCommands(
-        command.subCommand,
+        command.setSubCommand,
         message,
         resParser.arg
       );

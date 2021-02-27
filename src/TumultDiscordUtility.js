@@ -11,7 +11,9 @@ const { Collection } = require('discord.js');
 function arrayToCollectionCommand(array) {
   const resCollection = new Collection();
   for (let command of array) {
-    resCollection.set(command.name, command);
+    for (let name of command.name) {
+      resCollection.set(name, command);
+    }
   }
   return resCollection;
 }

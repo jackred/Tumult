@@ -49,6 +49,7 @@ class TumultPermission {
     this.everyone = everyone;
     this.updateCachedSet();
   }
+
   isInPermission() {}
 
   isBlacklist(user, roles, channel, discordPermission) {}
