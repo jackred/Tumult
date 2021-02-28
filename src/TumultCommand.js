@@ -67,9 +67,10 @@ class TumultCommand {
   // need constant // standard
   defaultBuildHelp({ color } = {}) {
     const help = this.generalHelp();
-    const subHelps = this.subCommand.map((val) => {
-      return { name: val.name, value: val.generalHelp() };
-    });
+    let subHelps = [];
+    for (let val of this.setSubCommand) {
+      subHelps.push({ name: val.name, value: val.generalHelp() });
+    }
     const msg = TumultBuildMessages.buildHelpMessage(this.name, help, {
       subHelps,
       color,
